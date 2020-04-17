@@ -1,0 +1,29 @@
+﻿  Player.cpp
+C:\Users\kondr\source\repos\Space_ship\Space_ship\Player.cpp(22,87): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+  main.cpp
+C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(22,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(179,24): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(200,145): warning C4244: аргумент: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(199,165): warning C4244: аргумент: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(208,145): warning C4244: аргумент: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(207,165): warning C4244: аргумент: преобразование "double" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+  Создание кода...
+C:\Users\kondr\source\repos\Space_ship\Space_ship\Player.cpp(18): warning C4715: Player::load: значение возвращается не при всех путях выполнения
+C:\Users\kondr\source\repos\Space_ship\Space_ship\Player.cpp(99): warning C4715: isCoolision: значение возвращается не при всех путях выполнения
+  Space_ship.vcxproj -> C:\Users\kondr\source\repos\Space_ship\x64\Debug\Space_ship.exe
