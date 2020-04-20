@@ -11,6 +11,8 @@ public:
 
     Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition);
 
+    Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition, int oneToThree);
+
     void setX(float x);
 
     void setY(float y);
@@ -20,6 +22,11 @@ public:
     float getY();
 
     float getAngle();
+
+    int getOneToThree()
+    {
+        return m_oneToThree;
+    }
 
     sf::Vector2f getPosition();
 
@@ -32,6 +39,10 @@ private:
     sf::CircleShape m_bullet;
     sf::Vector2f m_position;
     float m_angle;
+    int m_oneToThree = 0;
 };
 
 void moveBullets(std::vector<Bullet>& vec, sf::RenderWindow& window); 
+
+sf::Vector2f trajectory(float angle);
+

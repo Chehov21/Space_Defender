@@ -13,6 +13,7 @@
 #include"Enemy.h"
 #include"Bullet.h"
 #include"Button.h"
+#include"Gain.h"
 
 #define PI 3.14159265
 
@@ -21,7 +22,9 @@ int main()
     // Time
     srand(time(0));
     sf::Clock clock;
-    float spawnTime = 0;
+    float spawnEnemyTime = 0;
+    float spawnGainTime = 0;
+    float durationTime = 0;
 
     // Ship
     Player ship;
@@ -92,6 +95,9 @@ int main()
     // Enemies
     std::vector <Enemy> enemies;
 
+    // Gain
+    std::vector <Gain> gain;
+
     // Window
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Window", sf::Style::Default);
     window.setFramerateLimit(60);
@@ -109,7 +115,6 @@ int main()
         // Проигрыш
         if (end==true)
         {
-
             while (window.pollEvent(event))
             {
                 switch (event.type)
@@ -127,9 +132,12 @@ int main()
                                 end = false;
                                 std::vector<Enemy>().swap(enemies);
                                 std::vector<Bullet>().swap(bullets);
-                                spawnTime = 0;
+                                std::vector<Gain>().swap(gain);
+                                spawnEnemyTime = 0;
+                                spawnGainTime = 0;
                                 ship.getHighscore(ship.getScore(0));
                                 ship.getScore(-ship.getScore(0));
+                                durationTime = 0;
                         }
 
                         // Endgame
@@ -196,16 +204,23 @@ int main()
                 case sf::Event::MouseButtonPressed:
                     if (event.mouseButton.button == sf::Mouse::Left)
                     {
-                        ship.shoot(sf::Vector2f((520.f - 520.f) * cos((ship.getAngle() + 90) * PI / 180) - (315.f - 370.f) * sin((ship.getAngle() + 90) * PI / 180) + 520.f,
-                            (520.f - 520.f) * sin((ship.getAngle() + 90) * PI / 180) + (315.f - 370.f) * cos((ship.getAngle() + 90) * PI / 180) + 370.f), mouse, bullets);
+                        if (durationTime > 0)
+                        {
+                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets);
+                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets, 45);
+                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets, -45);
+                            durationTime--;
+                        }
+                        else {
+                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets);
+                        }
                     }
                     break;
 
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        ship.shoot(sf::Vector2f((520.f - 520.f) * cos((ship.getAngle() + 90) * PI / 180) - (315.f - 370.f) * sin((ship.getAngle() + 90) * PI / 180) + 520.f,
-                            (520.f - 520.f) * sin((ship.getAngle() + 90) * PI / 180) + (315.f - 370.f) * cos((ship.getAngle() + 90) * PI / 180) + 370.f), mouse, bullets);
+                        ship.shoot(trajectory(ship.getAngle()), mouse, bullets);
                     }
                     break;
 
@@ -214,18 +229,23 @@ int main()
                 }
             }
 
-            /*std::cout << "  x  " << mouse.x << std::endl;
+            std::cout << "  x  " << mouse.x << std::endl;
             std::cout << "  y  " << mouse.y << std::endl;
             std::cout << "  angle=" << ship.getAngle() << std::endl;
             std::cout << "--------" << std::endl;
-            std::cout << "--------" << std::endl;*/
-
-            // Спавн врагов
-            spawnTime += time;
-            IsSpawnEnemy(spawnTime, startPosition, enemies);
+            std::cout << "--------" << std::endl;
 
             // Отрисовка фона
             window.draw(background);
+
+            // Спавн врагов
+            spawnEnemyTime += time;
+            IsSpawnEnemy(spawnEnemyTime, startPosition, enemies);
+
+            // Спавн усилений
+            spawnGainTime += time;
+            IsSpawnGain(spawnGainTime, gain);
+            increaseSize(gain, window);
 
             // Движение пуль
             moveBullets(bullets, window);
@@ -234,7 +254,14 @@ int main()
             moveEnemies(enemies, window);
 
             // Проверка на столкновение
-            end = isCoolision(bullets, enemies, ship, window);
+            isCoolision(enemies, bullets, ship, window);
+            end = isCoolision(enemies, ship, window);
+
+            // Установка усиления
+            if (isCoolision(gain, bullets, ship, window))
+            {
+                durationTime = 20.f;
+            }
 
             // Отрисовка корабля
             window.draw(ship);

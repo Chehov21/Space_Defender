@@ -33,6 +33,12 @@ void Player::shoot(sf::Vector2f start, sf::Vector2i end, std::vector<Bullet>& ve
     vec.push_back(bullet);
 }
 
+void Player::shoot(sf::Vector2f start, sf::Vector2i end, std::vector<Bullet>& vec, int oneToThree)
+{
+    Bullet bullet(start, end,oneToThree);
+    vec.push_back(bullet);
+}
+
 sf::ConvexShape Player::getModel()
 {
     return m_model;
@@ -72,18 +78,25 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(m_model, states);
 }
 
-bool isCoolision(std::vector<Bullet>& vec_b, std::vector<Enemy>& vec_e, Player& ship, sf::RenderWindow &window)
+bool isCoolision(std::vector<Enemy>& vec, Player& ship, sf::RenderWindow& window)
 {
-    int count_e = 0;
-    int count_b = 0;
-
-    for (Enemy& e : vec_e)
+    for (Enemy& e : vec)
     {
         // Столкновение с кораблем
         if (ship.getModel().getLocalBounds().intersects(e.getEnemy().getGlobalBounds()))
         {
             return true;
         }
+    }
+    return false;
+}
+
+void isCoolision(std::vector<Enemy>& vec_e, std::vector<Bullet>& vec_b, Player& ship, sf::RenderWindow& window)
+{
+    int count_b = 0;
+    int count_e = 0;
+    for (Enemy& e : vec_e)
+    {
         for (Bullet& b : vec_b)
         {
             if (e.getEnemy().getGlobalBounds().intersects(b.getBullet().getGlobalBounds())) {
@@ -97,3 +110,54 @@ bool isCoolision(std::vector<Bullet>& vec_b, std::vector<Enemy>& vec_e, Player& 
         count_e++;
     }
 }
+
+
+bool isCoolision(std::vector<Gain>& vec_g, std::vector<Bullet>& vec_b, Player& ship, sf::RenderWindow& window)
+{
+    int count_b = 0;
+    int count_g = 0;
+    for (Gain& g : vec_g)
+    {
+        for (Bullet& b : vec_b)
+        {
+            if (g.getGain().getGlobalBounds().intersects(b.getBullet().getGlobalBounds())) {
+                ship.getScore(1);
+                vec_g.erase(vec_g.begin() + count_g);
+                vec_b.erase(vec_b.begin() + count_b);
+                return true;
+            }
+            count_b++;
+        }
+        count_b = 0;
+        count_g++;
+    }
+    return false;
+}
+
+
+//bool isCoolision(std::vector<Bullet>& vec_b, std::vector<Enemy>& vec_e, Player& ship, sf::RenderWindow &window)
+//{
+//    int count_e = 0;
+//    int count_b = 0;
+//
+//    for (Enemy& e : vec_e)
+//    {
+//        // Столкновение с кораблем
+//        if (ship.getModel().getLocalBounds().intersects(e.getEnemy().getGlobalBounds()))
+//        {
+//            return true;
+//        }
+//        for (Bullet& b : vec_b)
+//        {
+//            if (e.getEnemy().getGlobalBounds().intersects(b.getBullet().getGlobalBounds())) {
+//                ship.getScore(1);
+//                vec_e.erase(vec_e.begin() + count_e);
+//                vec_b.erase(vec_b.begin() + count_b);
+//            }
+//            count_b++;
+//        }
+//        count_b = 0;
+//        count_e++;
+//    }
+//}
+

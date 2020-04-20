@@ -34,8 +34,6 @@ private:
     float m_angle;
 };
 
-void spawnEnemy(sf::Vector2f start, std::vector<Enemy>& vec);
-
 void moveEnemies(std::vector<Enemy>& vec, sf::RenderWindow &window);
 
-void IsSpawnEnemy(float &spawnTime, sf::Vector2f &startPosition, std::vector<Enemy>& enemies);
+void IsSpawnEnemy(float &spawnEnemyTime, sf::Vector2f &startPosition, std::vector<Enemy>& enemies);

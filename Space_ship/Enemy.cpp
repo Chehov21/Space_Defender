@@ -10,8 +10,7 @@ Enemy::Enemy(sf::Vector2f StartPosition)
     sf::Vector2f endPosition = StartPosition;
     m_enemy.setRadius(10.f);
     m_enemy.setFillColor(sf::Color::Red);
-    m_position.x = startPosition.x;
-    m_position.y = startPosition.y;
+    m_position = startPosition;
     m_angle = atan((startPosition.y - endPosition.y) / (startPosition.x - endPosition.x)) * 180.0 / PI;
     if ((endPosition.x < startPosition.x && endPosition.y < startPosition.y) || (endPosition.x < startPosition.x && endPosition.y > startPosition.y))
     {
@@ -61,12 +60,6 @@ sf::CircleShape Enemy::getEnemy()
     return m_enemy;
 }
 
-void spawnEnemy(sf::Vector2f start, std::vector<Enemy>& vec)
-{
-    Enemy enemy(start);
-    vec.push_back(enemy);
-}
-
 void moveEnemies(std::vector<Enemy>& vec, sf::RenderWindow &window)
 {
     int count_e = 0;
@@ -79,22 +72,22 @@ void moveEnemies(std::vector<Enemy>& vec, sf::RenderWindow &window)
         if (e.getX() > 1024 || e.getX() < 0 || e.getY() > 768 || e.getY() < 0)
         {
             vec.erase(vec.begin() + count_e);
-            int size = vec.size();
-            if (size == 0)
+            if (vec.size()==0)
             {
                 // Освобождение памяти
-                std::vector<Enemy>().swap(vec);
+                //std::vector<Enemy>().swap(vec);
             }
         }
         count_e++;
     }
 }
 
-void IsSpawnEnemy(float &spawnTime, sf::Vector2f &startPosition, std::vector<Enemy>& enemies)
+void IsSpawnEnemy(float &spawnEnemyTime, sf::Vector2f &startPosition, std::vector<Enemy>& enemies)
 {
-    if (spawnTime > 1000000)
+    if (spawnEnemyTime > 1000000)
     {
-        spawnEnemy(startPosition, enemies);
-        spawnTime = 0;
+        Enemy enemy(startPosition);
+        enemies.push_back(enemy);
+        spawnEnemyTime = 0;
     }
 }
