@@ -90,7 +90,7 @@ void moveBullets(std::vector<Bullet>& vec, sf::RenderWindow& window)
             window.draw(b.getBullet());
             if (b.getX() > 1024 || b.getX() < 0 || b.getY() > 768 || b.getY() < 0)
             {
-                //vec.erase(vec.begin() + count_b);
+                vec.erase(vec.begin() + count_b);
                 int size = vec.size();
                 if (size == 0)
                 {
@@ -108,7 +108,7 @@ void moveBullets(std::vector<Bullet>& vec, sf::RenderWindow& window)
             window.draw(b.getBullet());
             if (b.getX() > 1024 || b.getX() < 0 || b.getY() > 768 || b.getY() < 0)
             {
-                //vec.erase(vec.begin() + count_b);
+                vec.erase(vec.begin() + count_b);
                 int size = vec.size();
                 if (size == 0)
                 {
@@ -126,7 +126,7 @@ void moveBullets(std::vector<Bullet>& vec, sf::RenderWindow& window)
             window.draw(b.getBullet());
             if (b.getX() > 1024 || b.getX() < 0 || b.getY() > 768 || b.getY() < 0)
             {
-                //vec.erase(vec.begin() + count_b);
+                vec.erase(vec.begin() + count_b);
                 int size = vec.size();
                 if (size == 0)
                 {
