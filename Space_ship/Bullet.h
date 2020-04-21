@@ -3,15 +3,16 @@
 #include <SFML/OpenGL.hpp>
 #include <iostream>
 #include<vector>
+#include"CArray.h"
 #define PI 3.14159265
 
 class Bullet
 {
 public:
 
-    Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition);
+    Bullet(const sf::Vector2f& StartPosition = sf::Vector2f(0, 0), const sf::Vector2i& endPosition = sf::Vector2i(0, 0));
 
-    Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition, int oneToThree);
+    Bullet(const sf::Vector2f& StartPosition, const sf::Vector2i& endPosition, int oneToThree);
 
     void setX(float x);
 
@@ -42,7 +43,7 @@ private:
     int m_oneToThree = 0;
 };
 
-void moveBullets(std::vector<Bullet>& vec, sf::RenderWindow& window); 
+void moveBullets(CArray<Bullet>& arr, sf::RenderWindow& window);
 
 sf::Vector2f trajectory(float angle);
 

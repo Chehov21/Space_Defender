@@ -65,24 +65,24 @@ void Gain::increaseRadius()
 }
 
 // Уменьшение размера шара с усилением
-void increaseSize(std::vector<Gain>& vec, sf::RenderWindow& window)
+void increaseSize(CArray <Gain>& arr, sf::RenderWindow& window)
 {
     int count_g = 0;
-    for (Gain& g : vec)
+    for(int i=0; i<arr.size();i++)
     {
-        window.draw(g.getGain());
-        std::cout << "R= " << g.getRadius() << std::endl;
-        if ((g.getRadius() - 0.1) > 0) {
-            g.increaseRadius();
+        window.draw(arr[i].getGain());
+        std::cout << "R= " << arr[i].getRadius() << std::endl;
+        if ((arr[i].getRadius() - 0.1) > 0) {
+            arr[i].increaseRadius();
         }
         else
         {
-            vec.erase(vec.begin() + count_g);
+            arr.erase(count_g);
         }
-        if (vec.size() == 0)
+        if (arr.size() == 0)
         {
             // Освобождение памяти
-            std::vector<Gain>().swap(vec);
+            arr.clear();
         }
         count_g++;
     }
@@ -126,12 +126,12 @@ sf::Vector2i oneToThree(sf::Vector2f startPosition, sf::Vector2i endPosition, fl
 //    return sf::Vector2i(startPosition.x + rx * cos(angle) - ry * sin(angle), startPosition.y + rx * sin(angle) + ry * cos(angle));
 //}
 
-void IsSpawnGain(float& spawnGainTime, std::vector<Gain>& vec)
+void IsSpawnGain(float& spawnGainTime, CArray <Gain> & arr)
 {
     if (spawnGainTime > 5000000)
     {
         Gain gain;
-        vec.push_back(gain);
+        arr.push_back(gain);
         spawnGainTime = 0;
     }
 }

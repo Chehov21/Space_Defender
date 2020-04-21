@@ -3,6 +3,7 @@
 #include <SFML/OpenGL.hpp>
 #include <iostream>
 #include<vector>
+#include"CArray.h"
 #define PI 3.14159265
 
 class Gain
@@ -34,8 +35,8 @@ private:
     float m_radius=20.f;
 };
 
-void IsSpawnGain(float& spawnGainTime, std::vector<Gain>& gain);
+void IsSpawnGain(float& spawnGainTime, CArray <Gain>& arr);
 
-void increaseSize(std::vector<Gain>& vec, sf::RenderWindow& window);
+void increaseSize(CArray <Gain>& arr, sf::RenderWindow& window);
 
 sf::Vector2i oneToThree(sf::Vector2f startPosition, sf::Vector2i endPosition, float angle);

@@ -2,11 +2,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include"Bullet.h"
 #include"Enemy.h"
 #include"Button.h"
 #include"Gain.h"
+#include"CArray.h"
+#include"CArray.h"
 #define PI 3.14159265
 
 class Player : public sf::Drawable, public sf::Transformable
@@ -19,9 +22,9 @@ public:
 
     void rotate(sf::Vector2i mouse, sf::Vector2f startPosition);
 
-    void shoot(sf::Vector2f start, sf::Vector2i end, std::vector<Bullet>& vec);
+    void shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr);
 
-    void shoot(sf::Vector2f start, sf::Vector2i end, std::vector<Bullet>& vec, int oneToThree);
+    void shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr, int oneToThree);
 
     sf::ConvexShape getModel();
 
@@ -30,6 +33,8 @@ public:
     int getHighscore(int score);
 
     float getAngle();
+
+    void setTexture(int count);
 
 private:
 
@@ -42,8 +47,8 @@ private:
     sf::ConvexShape m_model;
 };
 
-bool isCoolision(std::vector<Enemy>& vec, Player& ship, sf::RenderWindow& window);
+bool isCoolision(CArray <Enemy>& arr, Player& ship, sf::RenderWindow& window);
 
-void isCoolision(std::vector<Enemy>& vec_e, std::vector<Bullet>& vec_b, Player& ship, sf::RenderWindow& window);
+void isCoolision(CArray<Enemy>& arrE, CArray<Bullet>& arrB, Player& ship, sf::RenderWindow& window);
 
-bool isCoolision(std::vector<Gain>& vec_g, std::vector<Bullet>& vec_b, Player& ship, sf::RenderWindow& window);
+bool isCoolision(CArray<Gain>& arrG, CArray<Bullet>& arrB, sf::RenderWindow& window);

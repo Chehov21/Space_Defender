@@ -1,6 +1,6 @@
 #include"Bullet.h"
 
-Bullet::Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition)
+Bullet::Bullet(const sf::Vector2f& StartPosition, const sf::Vector2i& endPosition)
 {
     m_bullet.setRadius(5.f);
     m_bullet.setFillColor(sf::Color::White);
@@ -11,11 +11,11 @@ Bullet::Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition)
     {
         m_angle += 180;
     }
-    std::cout << "endX= " << endPosition.x << " endY=" << endPosition.y << std::endl;
+    //std::cout << "endX= " << endPosition.x << " endY=" << endPosition.y << std::endl;
     m_bullet.setPosition(StartPosition);
 }
 
-Bullet::Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition, int oneToThree)
+Bullet::Bullet(const sf::Vector2f& StartPosition, const sf::Vector2i& endPosition, int oneToThree)
 {
     if (oneToThree == 45)
     {
@@ -31,7 +31,7 @@ Bullet::Bullet(sf::Vector2f& StartPosition, sf::Vector2i& endPosition, int oneTo
     {
         m_angle += 180;
     }
-    std::cout << "endX= " << endPosition.x << " endY=" << endPosition.y << std::endl;
+    //std::cout << "endX= " << endPosition.x << " endY=" << endPosition.y << std::endl;
     m_bullet.setPosition(StartPosition);
 }
 
@@ -77,61 +77,67 @@ sf::CircleShape Bullet::getBullet()
     return m_bullet;
 }
 
-void moveBullets(std::vector<Bullet>& vec, sf::RenderWindow& window)
+void moveBullets(CArray<Bullet>& arr, sf::RenderWindow& window)
 {
     int count_b = 0;
-    for (Bullet& b : vec)
+    for (int i=0;i<arr.size();i++)
     {
-        if (b.getOneToThree() == 45)
+        if (arr[i].getOneToThree() == 45)
         {
-            b.setX(b.getX() + cos(b.getAngle() * PI / 180 + 45) + cos(b.getAngle() * PI / 180) * 5);
-            b.setY(b.getY() + sin(b.getAngle() * PI / 180 + 45) + sin(b.getAngle() * PI / 180) * 5);
-            b.setPosition(b.getPosition());
-            window.draw(b.getBullet());
-            if (b.getX() > 1024 || b.getX() < 0 || b.getY() > 768 || b.getY() < 0)
+            arr[i].setX(arr[i].getX() + cos(arr[i].getAngle() * PI / 180 + 45) + cos(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setY(arr[i].getY() + sin(arr[i].getAngle() * PI / 180 + 45) + sin(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setPosition(arr[i].getPosition());
+            window.draw(arr[i].getBullet());
+            if (arr[i].getX() > 1024 || arr[i].getX() < 0 || arr[i].getY() > 768 || arr[i].getY() < 0)
             {
-                vec.erase(vec.begin() + count_b);
-                int size = vec.size();
+                arr.erase(count_b);
+                count_b--;
+                i--;
+                int size = arr.size();
                 if (size == 0)
                 {
                     // Освобождение памяти
-                    //std::vector<Bullet>().swap(vec);
+                    arr.clear();
                 }
             }
             count_b++;
         }
-        else if (b.getOneToThree() == -45)
+        else if (arr[i].getOneToThree() == -45)
         {
-            b.setX(b.getX() + cos(b.getAngle() * PI / 180 - 45) + cos(b.getAngle() * PI / 180) * 5);
-            b.setY(b.getY() + sin(b.getAngle() * PI / 180 - 45) + sin(b.getAngle() * PI / 180) * 5);
-            b.setPosition(b.getPosition());
-            window.draw(b.getBullet());
-            if (b.getX() > 1024 || b.getX() < 0 || b.getY() > 768 || b.getY() < 0)
+            arr[i].setX(arr[i].getX() + cos(arr[i].getAngle() * PI / 180 - 45) + cos(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setY(arr[i].getY() + sin(arr[i].getAngle() * PI / 180 - 45) + sin(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setPosition(arr[i].getPosition());
+            window.draw(arr[i].getBullet());
+            if (arr[i].getX() > 1024 || arr[i].getX() < 0 || arr[i].getY() > 768 || arr[i].getY() < 0)
             {
-                vec.erase(vec.begin() + count_b);
-                int size = vec.size();
+                arr.erase(count_b);
+                count_b--;
+                i--;
+                int size = arr.size();
                 if (size == 0)
                 {
                     // Освобождение памяти
-                    //std::vector<Bullet>().swap(vec);
+                    arr.clear();
                 }
             }
             count_b++;
         }
         else
         {
-            b.setX(b.getX() + cos(b.getAngle() * PI / 180) * 5);
-            b.setY(b.getY() + sin(b.getAngle() * PI / 180) * 5);
-            b.setPosition(b.getPosition());
-            window.draw(b.getBullet());
-            if (b.getX() > 1024 || b.getX() < 0 || b.getY() > 768 || b.getY() < 0)
+            arr[i].setX(arr[i].getX() + cos(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setY(arr[i].getY() + sin(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setPosition(arr[i].getPosition());
+            window.draw(arr[i].getBullet());
+            if (arr[i].getX() > 1024 || arr[i].getX() < 0 || arr[i].getY() > 768 || arr[i].getY() < 0)
             {
-                vec.erase(vec.begin() + count_b);
-                int size = vec.size();
+                arr.erase(count_b);
+                count_b--;
+                i--;
+                int size = arr.size();
                 if (size == 0)
                 {
                     // Освобождение памяти
-                    //std::vector<Bullet>().swap(vec);
+                    arr.clear();
                 }
             }
             count_b++;

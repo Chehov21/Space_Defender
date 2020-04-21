@@ -8,6 +8,11 @@ Player::Player()
     m_model.setPoint(2, sf::Vector2f(510.f, 400.f));
     m_model.setPoint(3, sf::Vector2f(550.f, 430.f));
     m_model.setOrigin(510.f, 390.f);
+    if (!m_texture.loadFromFile("texture_ship.png"))
+    {
+        std::cout<<"Load failed!"<<std::endl;
+    }
+    m_model.setTexture(&m_texture);
 }
 
 bool Player::load(const std::string& tileset, unsigned int width, unsigned int height)
@@ -27,16 +32,16 @@ void Player::rotate(sf::Vector2i mouse, sf::Vector2f startPosition)
     m_model.setRotation(m_angle + 90);
 }
 
-void Player::shoot(sf::Vector2f start, sf::Vector2i end, std::vector<Bullet>& vec)
+void Player::shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr)
 {
     Bullet bullet(start, end);
-    vec.push_back(bullet);
+    arr.push_back(bullet);
 }
 
-void Player::shoot(sf::Vector2f start, sf::Vector2i end, std::vector<Bullet>& vec, int oneToThree)
+void Player::shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr, int oneToThree)
 {
     Bullet bullet(start, end,oneToThree);
-    vec.push_back(bullet);
+    arr.push_back(bullet);
 }
 
 sf::ConvexShape Player::getModel()
@@ -64,6 +69,19 @@ float Player::getAngle()
     return m_angle;
 }
 
+void Player::setTexture(int count)
+{
+    std::ostringstream countTexture;
+    countTexture << "texture_ship";
+    countTexture << count;
+    countTexture << ".png";
+    if (!m_texture.loadFromFile(countTexture.str()))
+    {
+        std::cout << "Load failed!" << std::endl;
+    }
+    m_model.setTexture(&m_texture);
+}
+
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the entity's transform -- combine it with the one that was passed by the caller
@@ -78,12 +96,12 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(m_model, states);
 }
 
-bool isCoolision(std::vector<Enemy>& vec, Player& ship, sf::RenderWindow& window)
+bool isCoolision(CArray <Enemy>& arr, Player& ship, sf::RenderWindow& window)
 {
-    for (Enemy& e : vec)
+    for(int i=0;i<arr.size();i++)
     {
         // Столкновение с кораблем
-        if (ship.getModel().getLocalBounds().intersects(e.getEnemy().getGlobalBounds()))
+        if (ship.getModel().getLocalBounds().intersects(arr[i].getEnemy().getGlobalBounds()))
         {
             return true;
         }
@@ -91,39 +109,63 @@ bool isCoolision(std::vector<Enemy>& vec, Player& ship, sf::RenderWindow& window
     return false;
 }
 
-void isCoolision(std::vector<Enemy>& vec_e, std::vector<Bullet>& vec_b, Player& ship, sf::RenderWindow& window)
+void isCoolision(CArray<Enemy>& arrE, CArray<Bullet>& arrB, Player& ship, sf::RenderWindow& window)
 {
     int count_b = 0;
     int count_e = 0;
-    for (Enemy& e : vec_e)
+    int sizeB = arrB.size();
+    int sizeE = arrE.size();
+    /*int* deleteE = new int[arrE.size()];
+    int countDeleteE = 0;
+    int* deleteB = new int[arrB.size()];
+    int countDeleteB = 0;*/
+    for (int i = 0; i < sizeE; i++)
     {
-        for (Bullet& b : vec_b)
+        for (int j = 0; j <sizeB; j++)
         {
-            if (e.getEnemy().getGlobalBounds().intersects(b.getBullet().getGlobalBounds())) {
+            if (arrE[i].getEnemy().getGlobalBounds().intersects(arrB[j].getBullet().getGlobalBounds())) {
                 ship.getScore(1);
-                vec_e.erase(vec_e.begin() + count_e);
-                vec_b.erase(vec_b.begin() + count_b);
+                arrE.erase(count_e);
+                arrB.erase(count_b);
+                count_e--;
+                sizeE--;
+                sizeB--;
+                i--;
+                break;
+                /*deleteE[countDeleteE] = count_e;
+                countDeleteE++;
+                deleteB[countDeleteB] = count_b;
+                countDeleteB++;*/
             }
             count_b++;
         }
         count_b = 0;
         count_e++;
     }
+    /*for (int i = 0; i < countDeleteE; i++)
+    {
+        arrE.erase(deleteE[i]);
+        arrB.erase(deleteB[i]);
+    }
+    delete[] deleteE;
+    delete[] deleteB;*/
 }
 
 
-bool isCoolision(std::vector<Gain>& vec_g, std::vector<Bullet>& vec_b, Player& ship, sf::RenderWindow& window)
+bool isCoolision(CArray<Gain>& arrG, CArray<Bullet>& arrB, sf::RenderWindow& window)
 {
     int count_b = 0;
     int count_g = 0;
-    for (Gain& g : vec_g)
+    for(int i=0;i< arrG.size();i++)
     {
-        for (Bullet& b : vec_b)
+        for (int j = 0; j < arrB.size(); j++)
         {
-            if (g.getGain().getGlobalBounds().intersects(b.getBullet().getGlobalBounds())) {
-                ship.getScore(1);
-                vec_g.erase(vec_g.begin() + count_g);
-                vec_b.erase(vec_b.begin() + count_b);
+            if (arrG[i].getGain().getGlobalBounds().intersects(arrB[j].getBullet().getGlobalBounds())) {
+                arrG.erase(count_g);
+                arrB.erase(count_b);
+                j--;
+                count_b--;
+                count_g--;
                 return true;
             }
             count_b++;
@@ -133,7 +175,6 @@ bool isCoolision(std::vector<Gain>& vec_g, std::vector<Bullet>& vec_b, Player& s
     }
     return false;
 }
-
 
 //bool isCoolision(std::vector<Bullet>& vec_b, std::vector<Enemy>& vec_e, Player& ship, sf::RenderWindow &window)
 //{

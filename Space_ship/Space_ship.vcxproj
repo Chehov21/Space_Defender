@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CArray.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Gain.h" />
     <ClInclude Include="Palyer.h" />

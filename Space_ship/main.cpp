@@ -4,8 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <math.h>
-#include <stdio.h>
-#include <string.h>
+#include <new>
 #include <vector>
 #include <cstdlib>
 #include <ctime>
@@ -14,6 +13,13 @@
 #include"Bullet.h"
 #include"Button.h"
 #include"Gain.h"
+#include"CArray.h"
+
+ // Борьба с учечкой памяти
+#define __CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#define new DEBUG_NEW
 
 #define PI 3.14159265
 
@@ -30,6 +36,7 @@ int main()
     Player ship;
     sf::Vector2f startPosition = sf::Vector2f(520.0f, 370.0f);
     ship.setPosition(startPosition);
+    int countTexture = 0;
 
     // Кнопки Да/Нет
     Button buttontryAgain(sf::Vector2f(420.f, 550.f), sf::Vector2f(80.f, 30.f));
@@ -90,13 +97,16 @@ int main()
     No.setString("No");
 
     // Bullets
-    std::vector <Bullet> bullets;
+    //std::vector <Bullet> bullets;
+    CArray <Bullet> bullets;
 
     // Enemies
-    std::vector <Enemy> enemies;
+    //std::vector <Enemy> enemies;
+    CArray <Enemy> enemies;
 
     // Gain
-    std::vector <Gain> gain;
+    //std::vector <Gain> gain;
+    CArray <Gain> gain;
 
     // Window
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Window", sf::Style::Default);
@@ -130,9 +140,9 @@ int main()
                         if (buttontryAgain.isButtonClick(sf::Mouse::getPosition(window)))
                         {
                                 end = false;
-                                std::vector<Enemy>().swap(enemies);
-                                std::vector<Bullet>().swap(bullets);
-                                std::vector<Gain>().swap(gain);
+                                enemies.clear();
+                                bullets.clear();
+                                gain.clear();
                                 spawnEnemyTime = 0;
                                 spawnGainTime = 0;
                                 ship.getHighscore(ship.getScore(0));
@@ -143,6 +153,9 @@ int main()
                         // Endgame
                         if (buttonEnd.isButtonClick(sf::Mouse::getPosition(window)))
                         {
+                            enemies.clear();
+                            bullets.clear();
+                            gain.clear();
                             return 0;
                         }
                     }
@@ -229,11 +242,11 @@ int main()
                 }
             }
 
-            std::cout << "  x  " << mouse.x << std::endl;
+            /*std::cout << "  x  " << mouse.x << std::endl;
             std::cout << "  y  " << mouse.y << std::endl;
             std::cout << "  angle=" << ship.getAngle() << std::endl;
             std::cout << "--------" << std::endl;
-            std::cout << "--------" << std::endl;
+            std::cout << "--------" << std::endl;*/
 
             // Отрисовка фона
             window.draw(background);
@@ -258,9 +271,11 @@ int main()
             end = isCoolision(enemies, ship, window);
 
             // Установка усиления
-            if (isCoolision(gain, bullets, ship, window))
+            if (isCoolision(gain, bullets, window))
             {
                 durationTime = 20.f;
+                countTexture++;
+                ship.setTexture(countTexture);
             }
 
             // Отрисовка корабля
@@ -279,5 +294,7 @@ int main()
         // end the current frame
         window.display();
     }
+
+    _CrtDumpMemoryLeaks();
     return 0;
 }

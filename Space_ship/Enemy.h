@@ -3,13 +3,14 @@
 #include <SFML/OpenGL.hpp>
 #include <iostream>
 #include<vector>
+#include"CArray.h"
 #define PI 3.14159265
 
 class Enemy
 {
 public:
 
-    Enemy(sf::Vector2f StartPosition);
+    Enemy(const sf::Vector2f StartPosition = sf::Vector2f(0, 0));
 
     void setX(float x);
 
@@ -34,6 +35,6 @@ private:
     float m_angle;
 };
 
-void moveEnemies(std::vector<Enemy>& vec, sf::RenderWindow &window);
+void moveEnemies(CArray <Enemy>& arr, sf::RenderWindow& window);
 
-void IsSpawnEnemy(float &spawnEnemyTime, sf::Vector2f &startPosition, std::vector<Enemy>& enemies);
+void IsSpawnEnemy(float& spawnEnemyTime, sf::Vector2f& startPosition, CArray<Enemy>& arr);
