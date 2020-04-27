@@ -6,10 +6,10 @@
 #include"CArray.h"
 #define PI 3.14159265
 
-class Gain
+class oneToThree
 {
 public:
-    Gain();
+    oneToThree();
 
     void setX(float x);
 
@@ -30,13 +30,31 @@ public:
     void increaseRadius();
 
 private:
-    sf::CircleShape m_gain;
+    sf::CircleShape m_shape;
     sf::Vector2f m_position;
     float m_radius=20.f;
 };
 
-void IsSpawnGain(float& spawnGainTime, CArray <Gain>& arr);
+void IsSpawnGain(float& spawnGainTime, CArray <oneToThree>& arr);
 
-void increaseSize(CArray <Gain>& arr, sf::RenderWindow& window);
+void increaseSize(CArray <oneToThree>& arr, sf::RenderWindow& window);
 
-sf::Vector2i oneToThree(sf::Vector2f startPosition, sf::Vector2i endPosition, float angle);
+//sf::Vector2i oneToThree(sf::Vector2f startPosition, sf::Vector2i endPosition, float angle);
+
+class Laser
+{
+public:
+
+	Laser();
+
+    void rotate(sf::Vector2f startPosition, sf::Vector2i mouse);
+
+    void setStart(sf::Vector2f startPosition);
+
+    sf::RectangleShape getLaser();
+
+private:
+    sf::RectangleShape m_laser;
+    sf::Vector2f m_position;
+    float m_angle;
+};

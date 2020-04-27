@@ -1,11 +1,4 @@
-﻿  Player.cpp
-C:\Users\kondr\source\repos\Space_ship\Space_ship\Player.cpp(27,87): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-  main.cpp
+﻿  main.cpp
 C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(29,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(200,24): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
-  Создание кода...
-C:\Users\kondr\source\repos\Space_ship\Space_ship\Player.cpp(23): warning C4715: Player::load: значение возвращается не при всех путях выполнения
-C:\Users\kondr\source\repos\Space_ship\Space_ship\CArray.h(214): warning C4715: CArray<Enemy>::operator[]: значение возвращается не при всех путях выполнения
-C:\Users\kondr\source\repos\Space_ship\Space_ship\CArray.h(214): warning C4715: CArray<Bullet>::operator[]: значение возвращается не при всех путях выполнения
-C:\Users\kondr\source\repos\Space_ship\Space_ship\CArray.h(214): warning C4715: CArray<Gain>::operator[]: значение возвращается не при всех путях выполнения
+C:\Users\kondr\source\repos\Space_ship\Space_ship\main.cpp(202,24): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
   Space_ship.vcxproj -> C:\Users\kondr\source\repos\Space_ship\x64\Debug\Space_ship.exe

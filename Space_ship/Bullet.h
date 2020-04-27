@@ -10,9 +10,10 @@ class Bullet
 {
 public:
 
-    Bullet(const sf::Vector2f& StartPosition = sf::Vector2f(0, 0), const sf::Vector2i& endPosition = sf::Vector2i(0, 0));
+    // startPosition- это позиция на конце ракеты, а imaginaryStartPosition это центр ракеты (пофикшен баг с неправильным направлением полета пули)
+    Bullet(const sf::Vector2f& StartPosition = sf::Vector2f(0, 0), const sf::Vector2f& imaginaryStartPosition = sf::Vector2f(0, 0),const sf::Vector2i& endPosition = sf::Vector2i(0, 0));
 
-    Bullet(const sf::Vector2f& StartPosition, const sf::Vector2i& endPosition, int oneToThree);
+    Bullet(const sf::Vector2f& StartPosition, const sf::Vector2f& imaginaryStartPosition, const sf::Vector2i& endPosition, int oneToThree);
 
     void setX(float x);
 

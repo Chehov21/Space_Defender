@@ -1,13 +1,13 @@
 #include"Bullet.h"
 
-Bullet::Bullet(const sf::Vector2f& StartPosition, const sf::Vector2i& endPosition)
+Bullet::Bullet(const sf::Vector2f& StartPosition, const sf::Vector2f& imaginaryStartPosition, const sf::Vector2i& endPosition)
 {
     m_bullet.setRadius(5.f);
     m_bullet.setFillColor(sf::Color::White);
     m_position.x = StartPosition.x;
     m_position.y = StartPosition.y;
-    m_angle = atan((endPosition.y - StartPosition.y) / (endPosition.x - StartPosition.x)) * 180.0 / PI;
-    if ((endPosition.x < StartPosition.x && endPosition.y < StartPosition.y) || (endPosition.x < StartPosition.x && endPosition.y > StartPosition.y))
+    m_angle = atan((endPosition.y - imaginaryStartPosition.y) / (endPosition.x - imaginaryStartPosition.x)) * 180.0 / PI;
+    if ((endPosition.x < imaginaryStartPosition.x && endPosition.y < imaginaryStartPosition.y) || (endPosition.x < imaginaryStartPosition.x && endPosition.y > imaginaryStartPosition.y))
     {
         m_angle += 180;
     }
@@ -15,19 +15,19 @@ Bullet::Bullet(const sf::Vector2f& StartPosition, const sf::Vector2i& endPositio
     m_bullet.setPosition(StartPosition);
 }
 
-Bullet::Bullet(const sf::Vector2f& StartPosition, const sf::Vector2i& endPosition, int oneToThree)
+Bullet::Bullet(const sf::Vector2f& StartPosition, const sf::Vector2f& imaginaryStartPosition, const sf::Vector2i& endPosition, int oneToThree)
 {
-    if (oneToThree == 45)
+    if (oneToThree == 40)
     {
-        m_oneToThree = 45;
+        m_oneToThree = 40;
     }
-    else m_oneToThree = -45;
+    else m_oneToThree = -40;
     m_bullet.setRadius(5.f);
     m_bullet.setFillColor(sf::Color::White);
     m_position.x = StartPosition.x;
     m_position.y = StartPosition.y;
-    m_angle = atan((endPosition.y - StartPosition.y) / (endPosition.x - StartPosition.x)) * 180.0 / PI;
-    if ((endPosition.x < StartPosition.x && endPosition.y < StartPosition.y) || (endPosition.x < StartPosition.x && endPosition.y > StartPosition.y))
+    m_angle = atan((endPosition.y - imaginaryStartPosition.y) / (endPosition.x - imaginaryStartPosition.x)) * 180.0 / PI;
+    if ((endPosition.x < imaginaryStartPosition.x && endPosition.y < imaginaryStartPosition.y) || (endPosition.x < imaginaryStartPosition.x && endPosition.y > imaginaryStartPosition.y))
     {
         m_angle += 180;
     }
@@ -82,10 +82,10 @@ void moveBullets(CArray<Bullet>& arr, sf::RenderWindow& window)
     int count_b = 0;
     for (int i=0;i<arr.size();i++)
     {
-        if (arr[i].getOneToThree() == 45)
+        if (arr[i].getOneToThree() == 40)
         {
-            arr[i].setX(arr[i].getX() + cos(arr[i].getAngle() * PI / 180 + 45) + cos(arr[i].getAngle() * PI / 180) * 5);
-            arr[i].setY(arr[i].getY() + sin(arr[i].getAngle() * PI / 180 + 45) + sin(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setX(arr[i].getX() + cos(arr[i].getAngle() * PI / 180 + 40) + cos(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setY(arr[i].getY() + sin(arr[i].getAngle() * PI / 180 + 40) + sin(arr[i].getAngle() * PI / 180) * 5);
             arr[i].setPosition(arr[i].getPosition());
             window.draw(arr[i].getBullet());
             if (arr[i].getX() > 1024 || arr[i].getX() < 0 || arr[i].getY() > 768 || arr[i].getY() < 0)
@@ -102,10 +102,10 @@ void moveBullets(CArray<Bullet>& arr, sf::RenderWindow& window)
             }
             count_b++;
         }
-        else if (arr[i].getOneToThree() == -45)
+        else if (arr[i].getOneToThree() == -40)
         {
-            arr[i].setX(arr[i].getX() + cos(arr[i].getAngle() * PI / 180 - 45) + cos(arr[i].getAngle() * PI / 180) * 5);
-            arr[i].setY(arr[i].getY() + sin(arr[i].getAngle() * PI / 180 - 45) + sin(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setX(arr[i].getX() + cos(arr[i].getAngle() * PI / 180 - 40) + cos(arr[i].getAngle() * PI / 180) * 5);
+            arr[i].setY(arr[i].getY() + sin(arr[i].getAngle() * PI / 180 - 40) + sin(arr[i].getAngle() * PI / 180) * 5);
             arr[i].setPosition(arr[i].getPosition());
             window.draw(arr[i].getBullet());
             if (arr[i].getX() > 1024 || arr[i].getX() < 0 || arr[i].getY() > 768 || arr[i].getY() < 0)

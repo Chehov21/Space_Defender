@@ -22,7 +22,7 @@ bool Player::load(const std::string& tileset, unsigned int width, unsigned int h
         return false;
 }
 
-void Player::rotate(sf::Vector2i mouse, sf::Vector2f startPosition)
+void Player::rotate(sf::Vector2f startPosition, sf::Vector2i mouse)
 {
     m_angle = atan((mouse.y - startPosition.y) / (mouse.x - startPosition.x)) * 180.0 / PI;
     if ((mouse.x < startPosition.x && mouse.y <= startPosition.y) || (mouse.x < startPosition.x && mouse.y > startPosition.y))
@@ -32,15 +32,15 @@ void Player::rotate(sf::Vector2i mouse, sf::Vector2f startPosition)
     m_model.setRotation(m_angle + 90);
 }
 
-void Player::shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr)
+void Player::shoot(sf::Vector2f start, sf::Vector2f imaginaryStart, sf::Vector2i end, CArray<Bullet>& arr)
 {
-    Bullet bullet(start, end);
+    Bullet bullet(start, imaginaryStart, end);
     arr.push_back(bullet);
 }
 
-void Player::shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr, int oneToThree)
+void Player::shoot(sf::Vector2f start, sf::Vector2f imaginaryStart, sf::Vector2i end, CArray<Bullet>& arr, int oneToThree)
 {
-    Bullet bullet(start, end,oneToThree);
+    Bullet bullet(start, imaginaryStart, end, oneToThree);
     arr.push_back(bullet);
 }
 
@@ -151,8 +151,24 @@ void isCoolision(CArray<Enemy>& arrE, CArray<Bullet>& arrB, Player& ship, sf::Re
     delete[] deleteB;*/
 }
 
+void isCoolision(CArray<Enemy>& arrE, Laser laser, sf::RenderWindow& window)
+{
+    int count_e = 0;
+    int sizeE = arrE.size();
+    for (int i = 0; i < sizeE; i++)
+    {
+        sf::FloatRect boundingBox = laser.getLaser().getGlobalBounds();
+        if (arrE[i].getEnemy().getGlobalBounds().intersects(boundingBox)) {
+            arrE.erase(count_e);
+            count_e--;
+            sizeE--;
+            i--;
+        }
+        count_e++;
+    }
+}
 
-bool isCoolision(CArray<Gain>& arrG, CArray<Bullet>& arrB, sf::RenderWindow& window)
+bool isCoolision(CArray<oneToThree>& arrG, CArray<Bullet>& arrB, sf::RenderWindow& window)
 {
     int count_b = 0;
     int count_g = 0;
@@ -201,4 +217,3 @@ bool isCoolision(CArray<Gain>& arrG, CArray<Bullet>& arrB, sf::RenderWindow& win
 //        count_e++;
 //    }
 //}
-

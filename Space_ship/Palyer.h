@@ -20,11 +20,11 @@ public:
 
     bool load(const std::string& tileset, unsigned int width, unsigned int height);
 
-    void rotate(sf::Vector2i mouse, sf::Vector2f startPosition);
+    void rotate(sf::Vector2f startPosition, sf::Vector2i mouse);
 
-    void shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr);
+    void shoot(sf::Vector2f start, sf::Vector2f imaginaryStart, sf::Vector2i end, CArray<Bullet>& arr);
 
-    void shoot(sf::Vector2f start, sf::Vector2i end, CArray<Bullet>& arr, int oneToThree);
+    void shoot(sf::Vector2f start, sf::Vector2f imaginaryStart, sf::Vector2i end, CArray<Bullet>& arr, int oneToThree);
 
     sf::ConvexShape getModel();
 
@@ -51,4 +51,6 @@ bool isCoolision(CArray <Enemy>& arr, Player& ship, sf::RenderWindow& window);
 
 void isCoolision(CArray<Enemy>& arrE, CArray<Bullet>& arrB, Player& ship, sf::RenderWindow& window);
 
-bool isCoolision(CArray<Gain>& arrG, CArray<Bullet>& arrB, sf::RenderWindow& window);
+bool isCoolision(CArray<oneToThree>& arrG, CArray<Bullet>& arrB, sf::RenderWindow& window);
+
+void isCoolision(CArray<Enemy>& arrE, Laser laser, sf::RenderWindow& window);

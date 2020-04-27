@@ -29,7 +29,7 @@ int main()
     srand(time(0));
     sf::Clock clock;
     float spawnEnemyTime = 0;
-    float spawnGainTime = 0;
+    float spawnGainOneToThree = 0;
     float durationTime = 0;
 
     // Ship
@@ -106,7 +106,7 @@ int main()
 
     // Gain
     //std::vector <Gain> gain;
-    CArray <Gain> gain;
+    CArray <oneToThree> gain;
 
     // Window
     sf::RenderWindow window(sf::VideoMode(1024, 768), "Window", sf::Style::Default);
@@ -114,6 +114,8 @@ int main()
 
     // End?
     bool end = false;
+
+    //Laser laser;
 
     while (window.isOpen())
     {
@@ -144,7 +146,7 @@ int main()
                                 bullets.clear();
                                 gain.clear();
                                 spawnEnemyTime = 0;
-                                spawnGainTime = 0;
+                                spawnGainOneToThree = 0;
                                 ship.getHighscore(ship.getScore(0));
                                 ship.getScore(-ship.getScore(0));
                                 durationTime = 0;
@@ -202,7 +204,7 @@ int main()
             sf::Time t1 = sf::microseconds(10000);
 
             // Вращение корабля
-            ship.rotate(mouse, startPosition);
+            ship.rotate(startPosition, mouse);
             window.clear();
 
             while (window.pollEvent(event))
@@ -219,13 +221,13 @@ int main()
                     {
                         if (durationTime > 0)
                         {
-                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets);
-                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets, 45);
-                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets, -45);
+                            ship.shoot(trajectory(ship.getAngle()), startPosition, mouse, bullets);
+                            ship.shoot(trajectory(ship.getAngle()), startPosition, mouse,  bullets, 40);
+                            ship.shoot(trajectory(ship.getAngle()), startPosition, mouse,  bullets, -40);
                             durationTime--;
                         }
                         else {
-                            ship.shoot(trajectory(ship.getAngle()), mouse, bullets);
+                            ship.shoot(trajectory(ship.getAngle()), startPosition, mouse, bullets);
                         }
                     }
                     break;
@@ -233,7 +235,7 @@ int main()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Space)
                     {
-                        ship.shoot(trajectory(ship.getAngle()), mouse, bullets);
+                        ship.shoot(trajectory(ship.getAngle()), startPosition, mouse, bullets);
                     }
                     break;
 
@@ -248,6 +250,9 @@ int main()
             std::cout << "--------" << std::endl;
             std::cout << "--------" << std::endl;*/
 
+            //laser.setStart(trajectory(ship.getAngle()));
+            //laser.rotate(startPosition, mouse);
+
             // Отрисовка фона
             window.draw(background);
 
@@ -256,8 +261,8 @@ int main()
             IsSpawnEnemy(spawnEnemyTime, startPosition, enemies);
 
             // Спавн усилений
-            spawnGainTime += time;
-            IsSpawnGain(spawnGainTime, gain);
+            spawnGainOneToThree += time;
+            IsSpawnGain(spawnGainOneToThree, gain);
             increaseSize(gain, window);
 
             // Движение пуль
@@ -267,6 +272,7 @@ int main()
             moveEnemies(enemies, window);
 
             // Проверка на столкновение
+            //isCoolision(enemies, laser, window);
             isCoolision(enemies, bullets, ship, window);
             end = isCoolision(enemies, ship, window);
 
@@ -290,6 +296,8 @@ int main()
             highScore << ship.getHighscore(0);
             highScoreOut.setString("Highscore=" + highScore.str());
             window.draw(highScoreOut);
+
+            //window.draw(laser.getLaser());
         }
         // end the current frame
         window.display();
